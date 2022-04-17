@@ -38,11 +38,11 @@ class Analyzer:
                     If only_failed is True, the session has to be marked as failed
                     for the condition to be True.
                 """
-                result += "\n".join(
+                result += "".join(
                     [
                         f"{log['timestamp']} {session_id} {log['message']}"
                         for log in session["logs"]
                     ]
                 )
-                result += "\n---\n"
+                result += "---\n"
         return result

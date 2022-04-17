@@ -7,24 +7,24 @@ from src.analyzer import Analyzer
     "test_input,expected",
     [
         (
-            "2019-4-02 07:31:30 [007] User1 logs in",
+            "2019-4-02 07:31:30 [007] User1 logs in\n",
             {
                 "failed": False,
                 "logs": [
                     {
-                        "message": "User1 logs in",
+                        "message": "User1 logs in\n",
                         "timestamp": "2019-4-02 07:31:30",
                     }
                 ],
             },
         ),
         (
-            "2019-4-1 13:32:40 [190] User3 logs in",
+            "2019-4-1 13:32:40 [190] User3 logs in\n",
             {
                 "failed": False,
                 "logs": [
                     {
-                        "message": "User3 logs in",
+                        "message": "User3 logs in\n",
                         "timestamp": "2019-4-1 13:32:40",
                     }
                 ],
@@ -42,7 +42,7 @@ def test_correct_format(test_input, expected):
     "test_input",
     [
         "",
-        "2019-4-02 07:31:30",
+        "2019-4-02 07:31:30\n",
     ],
 )
 def test_fail_incorrect_format(test_input):
@@ -55,18 +55,18 @@ def test_fail_incorrect_format(test_input):
     "test_input,expected,only_failed",
     [
         (
-            ["2019-4-02 07:31:30 [123] User123 logs in"],
+            ["2019-4-02 07:31:30 [123] User123 logs in\n"],
             "2019-4-02 07:31:30 [123] User123 logs in\n---\n",
             False,
         ),
         (
             [
-                "2019-4-1 13:32:40 [481] User4 logs in",
-                "2019-4-1 13:32:40 [481] User4 does task 1",
-                "2019-4-1 13:32:40 [481] User4 does task 2",
-                "2019-4-1 13:32:40 [481] User4 does task 3",
-                "2019-4-1 13:32:40 [481] User4 does task 4",
-                "2019-4-1 13:32:40 [481] User4 logs out",
+                "2019-4-1 13:32:40 [481] User4 logs in\n",
+                "2019-4-1 13:32:40 [481] User4 does task 1\n",
+                "2019-4-1 13:32:40 [481] User4 does task 2\n",
+                "2019-4-1 13:32:40 [481] User4 does task 3\n",
+                "2019-4-1 13:32:40 [481] User4 does task 4\n",
+                "2019-4-1 13:32:40 [481] User4 logs out\n",
             ],
             (
                 "2019-4-1 13:32:40 [481] User4 does task 2\n"
@@ -79,26 +79,26 @@ def test_fail_incorrect_format(test_input):
         ),
         (
             [
-                "2019-4-1 13:32:40 [481] User4 logs in",
-                "2019-4-1 13:32:40 [481] User4 logs out",
+                "2019-4-1 13:32:40 [481] User4 logs in\n",
+                "2019-4-1 13:32:40 [481] User4 logs out\n",
             ],
             "2019-4-1 13:32:40 [481] User4 logs in\n2019-4-1 13:32:40 [481] User4 logs out\n---\n",
             False,
         ),
         (
             [
-                "2019-4-1 13:32:40 [481] User4 logs in",
-                "2019-4-1 13:32:40 [007] User4 logs in",
+                "2019-4-1 13:32:40 [481] User4 logs in\n",
+                "2019-4-1 13:32:40 [007] User4 logs in\n",
             ],
             "2019-4-1 13:32:40 [481] User4 logs in\n---\n2019-4-1 13:32:40 [007] User4 logs in\n---\n",
             False,
         ),
         (
             [
-                "2019-4-1 13:32:40 [481] User4 logs in",
-                "2019-4-1 13:32:40 [007] User4 logs in",
-                "2019-4-1 13:32:40 [481] User4 logs out",
-                "2019-4-1 13:32:40 [007] User4 logs out",
+                "2019-4-1 13:32:40 [481] User4 logs in\n",
+                "2019-4-1 13:32:40 [007] User4 logs in\n",
+                "2019-4-1 13:32:40 [481] User4 logs out\n",
+                "2019-4-1 13:32:40 [007] User4 logs out\n",
             ],
             (
                 "2019-4-1 13:32:40 [481] User4 logs in\n"
@@ -112,10 +112,10 @@ def test_fail_incorrect_format(test_input):
         ),
         (
                 [
-                    "2019-4-1 13:32:40 [481] User4 logs in",
-                    "2019-4-1 13:32:40 [007] User4 logs in",
-                    "2019-4-1 13:32:40 [481] ERROR: Something went wrong",
-                    "2019-4-1 13:32:40 [007] User4 logs out",
+                    "2019-4-1 13:32:40 [481] User4 logs in\n",
+                    "2019-4-1 13:32:40 [007] User4 logs in\n",
+                    "2019-4-1 13:32:40 [481] ERROR: Something went wrong\n",
+                    "2019-4-1 13:32:40 [007] User4 logs out\n",
                 ],
                 (
                         "2019-4-1 13:32:40 [481] User4 logs in\n"
