@@ -14,6 +14,7 @@ class Analyzer:
         TODO:
           - Make the log_format customizable;
           - Split the parser into another class or module;
+          - Validate timestamp format;
     get_session(session_id: str) -> dict:
         Gets a single session's tail
     get_all_sessions_string(only_failed: bool = False:
