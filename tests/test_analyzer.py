@@ -1,6 +1,6 @@
 import pytest
 
-from src.parser import Parser
+from src.analyzer import Analyzer
 
 
 @pytest.mark.parametrize(
@@ -17,8 +17,8 @@ from src.parser import Parser
     ],
 )
 def test_correct_format(test_input, expected):
-    p = Parser()
-    p.parse_line(test_input)
+    p = Analyzer()
+    p.ingest_line(test_input)
     assert p.get_session(test_input.split(" ", 3)[2]) == expected
 
 
@@ -30,9 +30,9 @@ def test_correct_format(test_input, expected):
     ],
 )
 def test_fail_incorrect_format(test_input):
-    p = Parser()
+    p = Analyzer()
     with pytest.raises(IndexError):
-        p.parse_line(test_input)
+        p.ingest_line(test_input)
 
 
 @pytest.mark.parametrize(
@@ -81,7 +81,7 @@ def test_fail_incorrect_format(test_input):
     ],
 )
 def test_get_all_sessions_string(test_input, expected):
-    p = Parser()
+    p = Analyzer()
     for item in test_input:
-        p.parse_line(item)
+        p.ingest_line(item)
     assert p.get_all_sessions_string() == expected

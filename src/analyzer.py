@@ -1,11 +1,11 @@
-class Parser:
+class Analyzer:
 
     _sessions: dict
 
     def __init__(self):
         self._sessions = {}
 
-    def parse_line(self, line: str):
+    def ingest_line(self, line: str):
         line_split = line.split(" ", 3)
         session = self._sessions.setdefault(line_split[2], [])
         session.append(
