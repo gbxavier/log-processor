@@ -7,15 +7,24 @@ class Analyzer:
 
     def ingest_line(self, line: str):
         line_split = line.split(" ", 3)
-        session = self._sessions.setdefault(line_split[2], [])
-        session.append(
+        line_object = {
+            "timestamp": f"{line_split[0]} {line_split[1]}",
+            "message": line_split[3],
+        }
+
+        session = self._sessions.setdefault(
+            line_split[2],
             {
-                "timestamp": f"{line_split[0]} {line_split[1]}",
-                "message": line_split[3],
-            }
+                "failed": False,
+                "logs": [],
+            },
         )
-        if len(session) > 4:
-            session.pop(0)
+        session["logs"].append(line_object)
+
+        if line_object["message"].startswith("ERROR:"):
+            session["failed"] = True
+        if len(session["logs"]) > 4:
+            session["logs"].pop(0)
 
     def get_session(self, session_id: str):
         return self._sessions[session_id]
@@ -26,7 +35,7 @@ class Analyzer:
             result += "\n".join(
                 [
                     f"{log['timestamp']} {session_id} {log['message']}"
-                    for log in session
+                    for log in session["logs"]
                 ]
             )
             result += "\n---\n"

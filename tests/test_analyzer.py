@@ -8,11 +8,27 @@ from src.analyzer import Analyzer
     [
         (
             "2019-4-02 07:31:30 [007] User1 logs in",
-            [{"timestamp": "2019-4-02 07:31:30", "message": "User1 logs in"}],
+            {
+                "failed": False,
+                "logs": [
+                    {
+                        "message": "User1 logs in",
+                        "timestamp": "2019-4-02 07:31:30",
+                    }
+                ],
+            },
         ),
         (
             "2019-4-1 13:32:40 [190] User3 logs in",
-            [{"timestamp": "2019-4-1 13:32:40", "message": "User3 logs in"}],
+            {
+                "failed": False,
+                "logs": [
+                    {
+                        "message": "User3 logs in",
+                        "timestamp": "2019-4-1 13:32:40",
+                    }
+                ],
+            },
         ),
     ],
 )
@@ -41,6 +57,23 @@ def test_fail_incorrect_format(test_input):
         (
             ["2019-4-02 07:31:30 [123] User123 logs in"],
             "2019-4-02 07:31:30 [123] User123 logs in\n---\n",
+        ),
+        (
+            [
+                "2019-4-1 13:32:40 [481] User4 logs in",
+                "2019-4-1 13:32:40 [481] User4 does task 1",
+                "2019-4-1 13:32:40 [481] User4 does task 2",
+                "2019-4-1 13:32:40 [481] User4 does task 3",
+                "2019-4-1 13:32:40 [481] User4 does task 4",
+                "2019-4-1 13:32:40 [481] User4 logs out",
+            ],
+            (
+                "2019-4-1 13:32:40 [481] User4 does task 2\n"
+                "2019-4-1 13:32:40 [481] User4 does task 3\n"
+                "2019-4-1 13:32:40 [481] User4 does task 4\n"
+                "2019-4-1 13:32:40 [481] User4 logs out\n"
+                "---\n"
+            ),
         ),
         (
             [
@@ -75,6 +108,7 @@ def test_fail_incorrect_format(test_input):
     ],
     ids=[
         "Single line",
+        "More than 4 lines for the same session",
         "Multiple lines same session_id",
         "Single Line different sessions",
         "Multiple Lines different sessions",
