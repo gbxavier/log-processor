@@ -52,11 +52,12 @@ def test_fail_incorrect_format(test_input):
 
 
 @pytest.mark.parametrize(
-    "test_input,expected",
+    "test_input,expected,only_failed",
     [
         (
             ["2019-4-02 07:31:30 [123] User123 logs in"],
             "2019-4-02 07:31:30 [123] User123 logs in\n---\n",
+            False,
         ),
         (
             [
@@ -74,6 +75,7 @@ def test_fail_incorrect_format(test_input):
                 "2019-4-1 13:32:40 [481] User4 logs out\n"
                 "---\n"
             ),
+            False,
         ),
         (
             [
@@ -81,6 +83,7 @@ def test_fail_incorrect_format(test_input):
                 "2019-4-1 13:32:40 [481] User4 logs out",
             ],
             "2019-4-1 13:32:40 [481] User4 logs in\n2019-4-1 13:32:40 [481] User4 logs out\n---\n",
+            False,
         ),
         (
             [
@@ -88,6 +91,7 @@ def test_fail_incorrect_format(test_input):
                 "2019-4-1 13:32:40 [007] User4 logs in",
             ],
             "2019-4-1 13:32:40 [481] User4 logs in\n---\n2019-4-1 13:32:40 [007] User4 logs in\n---\n",
+            False,
         ),
         (
             [
@@ -104,6 +108,21 @@ def test_fail_incorrect_format(test_input):
                 "2019-4-1 13:32:40 [007] User4 logs out\n"
                 "---\n"
             ),
+            False,
+        ),
+        (
+                [
+                    "2019-4-1 13:32:40 [481] User4 logs in",
+                    "2019-4-1 13:32:40 [007] User4 logs in",
+                    "2019-4-1 13:32:40 [481] ERROR: Something went wrong",
+                    "2019-4-1 13:32:40 [007] User4 logs out",
+                ],
+                (
+                        "2019-4-1 13:32:40 [481] User4 logs in\n"
+                        "2019-4-1 13:32:40 [481] ERROR: Something went wrong\n"
+                        "---\n"
+                ),
+                True,
         ),
     ],
     ids=[
@@ -112,10 +131,11 @@ def test_fail_incorrect_format(test_input):
         "Multiple lines same session_id",
         "Single Line different sessions",
         "Multiple Lines different sessions",
+        "Get only failed sessions",
     ],
 )
-def test_get_all_sessions_string(test_input, expected):
+def test_get_all_sessions_string(test_input, expected, only_failed):
     p = Analyzer()
     for item in test_input:
         p.ingest_line(item)
-    assert p.get_all_sessions_string() == expected
+    assert p.get_all_sessions_string(only_failed) == expected
