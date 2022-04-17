@@ -20,3 +20,14 @@ class Parser:
     def get_session(self, session_id: str):
         return self._sessions[session_id]
 
+    def get_all_sessions_string(self):
+        result = ""
+        for session_id, session in self._sessions.items():
+            result += "\n".join(
+                [
+                    f"{log['timestamp']} {session_id} {log['message']}"
+                    for log in session
+                ]
+            )
+            result += "\n---\n"
+        return result
