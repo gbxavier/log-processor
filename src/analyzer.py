@@ -28,7 +28,7 @@ class Analyzer:
     def __init__(self):
         self._sessions = {}
 
-    def ingest_line(self, line: str):
+    def ingest_line(self, line: str) -> None:
         line_split = line.split(" ", 3)
         line_object = {
             "timestamp": f"{line_split[0]} {line_split[1]}",
@@ -49,10 +49,10 @@ class Analyzer:
         if len(session["logs"]) > 4:
             session["logs"].pop(0)
 
-    def get_session(self, session_id: str):
+    def get_session(self, session_id: str) -> dict:
         return self._sessions[session_id]
 
-    def get_all_sessions_string(self, only_failed=False):
+    def get_all_sessions_string(self, only_failed: bool = False):
         result = ""
         for session_id, session in self._sessions.items():
             if not only_failed or session["failed"]:
