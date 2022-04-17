@@ -1,4 +1,27 @@
 class Analyzer:
+    """
+    This class ingests/parses log lines, while keeping the log flow's tail.
+
+    Attributes
+    ----------
+    _sessions: dict
+        list of sessions indexed by the session's id
+
+    Methods
+    -------
+    ingest_line(line: str) -> None:
+        Ingests the line based on a pre-defined log_format.
+        TODO:
+          - Make the log_format customizable;
+          - Split the parser into another class or module;
+    get_session(session_id: str) -> dict:
+        Gets a single session's tail
+    get_all_sessions_string(only_failed: bool = False:
+        Gets all the sessions' tail separated by "---" as a string
+        TODO:
+          - Make the separator a parameter
+
+    """
 
     _sessions: dict
 
